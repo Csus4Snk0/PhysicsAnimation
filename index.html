@@ -1,13 +1,38 @@
 <!doctype html>
-<html lang="en">
+<html lang="ja">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>physicsanimation</title>
+    <title>Spring Motion</title>
   </head>
+
   <body>
-    <div id="app"></div>
+    <h2>ばねの運動</h2>
+
+    <label>
+      mass:
+      <input id="mass" type="number" value="1" step="0.1" />
+    </label>
+
+    <label>
+      spring constant k:
+      <input id="springConstant" type="number" value="1" step="0.1" />
+    </label>
+
+    <label>
+      x0:
+      <input id="x0" type="number" value="1" step="0.1" />
+    </label>
+
+    <label>
+      v0:
+      <input id="v0" type="number" value="0" step="0.1" />
+    </label>
+
+    <button id="update">更新</button>
+
+    <div id="plot"></div>
+
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
