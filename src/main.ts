@@ -1,5 +1,5 @@
 import Plotly from "plotly.js-dist-min"
-import { integrate, stepEuler } from './ode_solver'
+import { integrate } from './ode_solver'
 
 
 // time grid
@@ -15,13 +15,14 @@ for (let t = 0; t <= tMax; t += dt) {
 function updatePlot() {
 
     // テキストボックスから値を取得
-    const mass = Number(document.getElementById("mass")!.value)
-    const springConstant = Number(document.getElementById("springConstant")!.value)
-    const x0 = Number(document.getElementById("x0")!.value)
-    const v0 = Number(document.getElementById("v0")!.value)
+    const mass = Number((document.getElementById("mass") as HTMLInputElement).value)
+    const springConstant = Number((document.getElementById("springConstant") as HTMLInputElement).value)
+    const x0 = Number((document.getElementById("x0") as HTMLInputElement).value)
+    const v0 = Number((document.getElementById("v0") as HTMLInputElement).value)
+
 
     // 運動方程式
-    const f = (t: number, y: number[]): number[] => {
+    const f = (_t: number, y: number[]): number[] => {
         const x = y[0]
         const v = y[1]
         return [v, -(springConstant / mass) * x]
