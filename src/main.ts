@@ -136,13 +136,13 @@ function updatePlot() {
     }
 
     const animationLayout = {
-        xaxis: {range: [-2, 2], title: "x"},
-        yaxis: {range: [-0.5, 0.5], showticklabels: false}
+        xaxis: {range: [-2, 2] as [number, number], title: {text: "x"}},
+        yaxis: {range: [-0.5, 0.5] as [number, number], showticklabels: false}
     }
 
     Plotly.newPlot("animation", frames[0].data, animationLayout)
     Plotly.addFrames("animation", frames)
-    Plotly.animate("animation", null,
+    Plotly.animate("animation", undefined,
                    {frame: {duration: dt * 1000},
                     transition: {duration: 0}
                    },
