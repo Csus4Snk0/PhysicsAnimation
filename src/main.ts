@@ -91,6 +91,62 @@ function updatePlot() {
     },
     ]
     Plotly.newPlot("plot", data)
+
+
+    const factor_v = Number((document.getElementById("factor_v") as HTMLInputElement).value)
+    const factor_F = Number((document.getElementById("factor_F") as HTMLInputElement).value)
+    const frameStep = 5
+    const frames = []
+    for (let i = 0; i < time.length; i+=frameStep) {
+        const xi = x[i]
+        const vi = v[i]
+        const Fi = -springConstant * xi
+
+        frames.push({name: `frame${i}`,
+                    data: [
+                        {
+                            x: [xi],
+                            y: [0],
+                            mode: "markers",
+                            marker: {size: 20,},
+                            name: "position",
+                        },
+                        {
+                            x: [xi, xi + vi*factor_v],
+                            y: [0.2, 0.2],
+                            mode: "lines+markers",
+                            marker: {
+                                size: [0, 20],
+                                symbol: ["circle", "diamond"],
+                            },
+                            name: "velocity",
+                        },
+                        {
+                            x: [xi, xi + Fi*factor_F],
+                            y: [-0.2, -0.2],
+                            mode: "lines+markers",
+                            marker: {
+                                size: [0, 20],
+                                symbol: ["circle", "diamond"],
+                            },
+                            name: "force",
+                        },
+                    ],
+                })
+    }
+
+    const animationLayout = {
+        xaxis: {range: [-2, 2], title: "x"},
+        yaxis: {range: [-0.5, 0.5], showticklabels: false}
+    }
+
+    Plotly.newPlot("animation", frames[0].data, animationLayout)
+    Plotly.addFrames("animation", frames)
+    Plotly.animate("animation", null,
+                   {frame: {duration: dt * 1000},
+                    transition: {duration: 0}
+                   },
+                  )
 }
 
 
