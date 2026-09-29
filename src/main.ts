@@ -31,10 +31,22 @@ function updatePlot() {
     // 数値的に解く
     const Y = integrate(f, time, [x0, v0])
     // const Y = integrate(f, time, [x0, v0], stepEuler)
-        const x: number[] = []
-        for (let i = 0; i < time.length; i++) {
-            x.push(Y[i][0])
-        }
+    const x: number[] = []
+    const v: number[] = []
+    for (let i = 0; i < time.length; i++) {
+        x.push(Y[i][0])
+        v.push(Y[i][1])
+    }
+
+    const energy: number[] = []
+    for (let i = 0; i < time.length; i++) {
+        const xi = x[i]
+        const vi = v[i]
+        energy.push(
+            0.5 * mass * vi ** 2
+            + 0.5 * springConstant * xi ** 2
+        )
+    }
 
     // 解析解
     const omega = Math.sqrt(springConstant / mass)
@@ -46,18 +58,35 @@ function updatePlot() {
         x_.push(xt)
     }
 
+
+    // プロット内容を選択
+    const quantity = (document.getElementById("quantity") as HTMLSelectElement).value
+    let y: number[]
+    let yTitle: string
+
+    if (quantity === "position") {
+       y = x
+       yTitle = "position"
+    } else if (quantity === "velocity") {
+       y = v
+       yTitle = "velocity"
+    } else {
+       y = energy
+       yTitle = "energy"
+    }
+
     // Plotlyでプロット
     const data = [
     {
         x: time,
         y: x_,
-        name: "Exact",
+        name: "Exact position",
         mode: "lines"
     },
     {
         x: time,
-        y: x,
-        name: "ODE",
+        y: y,
+        name: `ODE ${yTitle}`,
         mode: "lines"
     },
     ]
@@ -65,9 +94,9 @@ function updatePlot() {
 }
 
 
-// 「更新」ボタンを押したとき
+// GUI設定
 document.getElementById("update")!.addEventListener("click", updatePlot)
-
+document.getElementById("quantity")!.addEventListener("change", updatePlot)
 
 updatePlot()
 
